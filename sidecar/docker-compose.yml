@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  main-app:
+    build:
+      context: .
+      dockerfile: MainApp/Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SidecarSettings__BaseUrl=http://sidecar-app:5001
+    depends_on:
+      - sidecar-app
+
+  sidecar-app:
+    build:
+      context: .
+      dockerfile: SidecarApp/Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
